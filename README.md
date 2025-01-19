@@ -1,4 +1,4 @@
-# Linear Regression Implementation in Python
+# Linear Regression Class
 
 ## 📚 Project Overview
 
