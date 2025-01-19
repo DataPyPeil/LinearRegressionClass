@@ -2,7 +2,7 @@
 
 ## 📚 Project Overview
 
-This repository contains a Python implementation of a **Linear Regression** class. This project was developed as part of the academic requirements for the **"Mastère spécialisé en Science des Données"** program, submitted on **January 20th, 2025**.
+This repository contains a Python implementation of a **Linear Regression** class. This project was developed as part of the academic requirements for the **"Mastère spécialisé en Science des Données"** program, submitted on **January 25th, 2025**.
 
 The implementation demonstrates the mathematical foundations and coding of the **Ordinary Least Squares (OLS)** method for Linear Regression, along with tools for model training, prediction, and evaluation.
 
@@ -25,9 +25,4 @@ The implementation demonstrates the mathematical foundations and coding of the *
 To run this project, ensure you have Python 3.7 or above installed, along with the following dependencies:
 
 - `numpy` for matrix operations
-- `pandas` (optional, for data handling)
 - `matplotlib` (optional, for plotting results)
-
-Install dependencies using:
-```bash
-pip install numpy pandas matplotlib
