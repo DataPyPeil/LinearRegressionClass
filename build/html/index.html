@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>LinearRegression documentation &#8212; LinearRegression 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">LinearRegression 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">LinearRegression documentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="linearregression-documentation">
+<h1>LinearRegression documentation<a class="headerlink" href="#linearregression-documentation" title="Link to this heading">¶</a></h1>
+<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
+documentation for details.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="module-LinearRegression">
+<span id="module-reference"></span><h1>Module Reference<a class="headerlink" href="#module-LinearRegression" title="Link to this heading">¶</a></h1>
+<p>Created on Mon Dec  2 10:44:13 2024</p>
+<p>&#64;author: peill</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LinearRegression.</span></span><span class="sig-name descname"><span class="pre">LinearRegression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_gt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearRegression.LinearRegression.fit" title="LinearRegression.LinearRegression.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>()</p></td>
+<td><p>Model fit</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#LinearRegression.LinearRegression.plot" title="LinearRegression.LinearRegression.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>()</p></td>
+<td><p>Plot cost function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearRegression.LinearRegression.plot_featureimportance" title="LinearRegression.LinearRegression.plot_featureimportance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_featureimportance</span></code></a>([names])</p></td>
+<td><p>Plot feature importance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#LinearRegression.LinearRegression.predict" title="LinearRegression.LinearRegression.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>()</p></td>
+<td><p>Make predictions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#LinearRegression.LinearRegression.score" title="LinearRegression.LinearRegression.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>()</p></td>
+<td><p>Compute coefficient of determination R-squared</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._costFunction">
+<span class="sig-name descname"><span class="pre">_costFunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._costFunction" title="Link to this definition">¶</a></dt>
+<dd><p>Compute cost function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._evaluate">
+<span class="sig-name descname"><span class="pre">_evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the model LINEAR REGRESSION</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ndarray</dt><dd><p>prediction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._evaluateUpdate">
+<span class="sig-name descname"><span class="pre">_evaluateUpdate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._evaluateUpdate" title="Link to this definition">¶</a></dt>
+<dd><p>ugr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>TYPE</dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._gradients">
+<span class="sig-name descname"><span class="pre">_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._gradients" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate gradients</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._normalisationMinMax">
+<span class="sig-name descname"><span class="pre">_normalisationMinMax</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._normalisationMinMax" title="Link to this definition">¶</a></dt>
+<dd><p>rigjpo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>TYPE</dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._regularizedCostFunction">
+<span class="sig-name descname"><span class="pre">_regularizedCostFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Lasso'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._regularizedCostFunction" title="Link to this definition">¶</a></dt>
+<dd><p>Compute regularized cost function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._regularizedGradients">
+<span class="sig-name descname"><span class="pre">_regularizedGradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Lasso'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._regularizedGradients" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>reg</strong><span class="classifier">TYPE, optional</span></dt><dd><p>DESCRIPTION. The default is ‘Lasso’.</p>
+</dd>
+<dt><strong>penalty</strong><span class="classifier">TYPE, optional</span></dt><dd><p>DESCRIPTION. The default is 0.1.</p>
+</dd>
+<dt><strong>penalty2</strong><span class="classifier">TYPE, optional</span></dt><dd><p>DESCRIPTION. The default is 0.1.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>TYPE</dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._standardisation">
+<span class="sig-name descname"><span class="pre">_standardisation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._standardisation" title="Link to this definition">¶</a></dt>
+<dd><p>Standardisation of input values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression._updateParams">
+<span class="sig-name descname"><span class="pre">_updateParams</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression._updateParams" title="Link to this definition">¶</a></dt>
+<dd><p>Update parameters</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Model fit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>None.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot cost function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>None.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression.plot_featureimportance">
+<span class="sig-name descname"><span class="pre">plot_featureimportance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression.plot_featureimportance" title="Link to this definition">¶</a></dt>
+<dd><p>Plot feature importance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>names</strong><span class="classifier">TYPE, optional</span></dt><dd><p>DESCRIPTION. The default is None.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>TYPE</dt><dd><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LinearRegression.LinearRegression.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearRegression.LinearRegression.score" title="Link to this definition">¶</a></dt>
+<dd><p>Compute coefficient of determination R-squared</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>y_gt</strong><span class="classifier">ndarray</span></dt><dd><p>Target to predict = Ground Truth.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>R-squared.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">LinearRegression documentation</a></li>
+<li><a class="reference internal" href="#module-LinearRegression">Module Reference</a><ul>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression"><code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code></a><ul>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._costFunction"><code class="docutils literal notranslate"><span class="pre">LinearRegression._costFunction()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._evaluate"><code class="docutils literal notranslate"><span class="pre">LinearRegression._evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._evaluateUpdate"><code class="docutils literal notranslate"><span class="pre">LinearRegression._evaluateUpdate()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._gradients"><code class="docutils literal notranslate"><span class="pre">LinearRegression._gradients()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._normalisationMinMax"><code class="docutils literal notranslate"><span class="pre">LinearRegression._normalisationMinMax()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._regularizedCostFunction"><code class="docutils literal notranslate"><span class="pre">LinearRegression._regularizedCostFunction()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._regularizedGradients"><code class="docutils literal notranslate"><span class="pre">LinearRegression._regularizedGradients()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._standardisation"><code class="docutils literal notranslate"><span class="pre">LinearRegression._standardisation()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression._updateParams"><code class="docutils literal notranslate"><span class="pre">LinearRegression._updateParams()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression.fit"><code class="docutils literal notranslate"><span class="pre">LinearRegression.fit()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression.plot"><code class="docutils literal notranslate"><span class="pre">LinearRegression.plot()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression.plot_featureimportance"><code class="docutils literal notranslate"><span class="pre">LinearRegression.plot_featureimportance()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression.predict"><code class="docutils literal notranslate"><span class="pre">LinearRegression.predict()</span></code></a></li>
+<li><a class="reference internal" href="#LinearRegression.LinearRegression.score"><code class="docutils literal notranslate"><span class="pre">LinearRegression.score()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">LinearRegression 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">LinearRegression documentation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Clément Peillon.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    </div>
+  </body>
+</html>
