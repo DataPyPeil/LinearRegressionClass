@@ -258,6 +258,8 @@ class LinearRegression():
         
         if names is None:
             names = np.array([f'Feature {k}' for k in range (p.shape[0])])
+        else:
+            names = np.concat((np.array(['Bias']), names))
         
         # Sort by importance
         index = np.argsort(np.abs(p))
