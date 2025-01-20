@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 class LinearRegression():
     
-    def __init__(self, X, y_gt, lr=0.003, eps=0.001, reg=None, std=False):
+    def __init__(self, X, y_gt, lr=0.003, eps=1e-5, reg=None, std=None):
 
         self.X = X
         self.y_gt = y_gt
@@ -28,7 +28,7 @@ class LinearRegression():
         
         # Standardisation
         if std:
-            self.X = self._normalisationMinMax()
+            self.X = self._standardisation()
             
         # Initialisation
         self.y_pred = self._evaluate()
@@ -166,8 +166,11 @@ class LinearRegression():
         float
             R-squared.
         """
-        return 1-(np.sum((self.y_gt-self.y_pred)**2)/np.sum((self.y_gt-np.mean(self.y_gt))**2))
+        r_squared = 1-(np.sum((self.y_gt-self.y_pred)**2)/np.sum((self.y_gt-np.mean(self.y_gt))**2))
+        print(f'R-squared: {r_squared:.04f}')
         
+        return r_squared
+    
     def plot(self):
         """
         Plot the evolution of the cost function during model fitting
@@ -199,12 +202,11 @@ class LinearRegression():
         None.
 
         """
-        p = np.abs(self.params.reshape(-1))
+        p = np.abs(self.params[1:].reshape(-1))
         
         if names is None:
             names = np.array([f'Feature {k}' for k in range (p.shape[0])])
-        else:
-            names = np.concat((np.array(['Bias']), names))
+        
         
         # Sort by importance
         index = np.argsort(p)
