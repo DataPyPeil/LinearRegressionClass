@@ -199,7 +199,7 @@ class LinearRegression():
         None.
 
         """
-        p = self.params.reshape(-1)
+        p = np.abs(self.params.reshape(-1))
         
         if names is None:
             names = np.array([f'Feature {k}' for k in range (p.shape[0])])
@@ -207,9 +207,9 @@ class LinearRegression():
             names = np.concat((np.array(['Bias']), names))
         
         # Sort by importance
-        index = np.argsort(np.abs(p))
+        index = np.argsort(p)
         names_modified = np.take_along_axis(names, index, axis=0)
-        p_modif = np.take_along_axis(np.abs(p)*100/np.sum(p), index, axis=0)
+        p_modif = np.take_along_axis(p*100/np.sum(p), index, axis=0)
 
         # Plot
         plt.figure(figsize=(5,5))
