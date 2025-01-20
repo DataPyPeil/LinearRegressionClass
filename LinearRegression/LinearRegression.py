@@ -12,29 +12,7 @@ import matplotlib.pyplot as plt
 class LinearRegression():
     
     def __init__(self, X, y_gt, alpha=0.003, eps=0.001, reg=None, std=False):
-        """
-        
 
-        Parameters
-        ----------
-        X : TYPE
-            DESCRIPTION.
-        y_gt : TYPE
-            DESCRIPTION.
-        alpha : TYPE, optional
-            DESCRIPTION. The default is 0.003.
-        eps : TYPE, optional
-            DESCRIPTION. The default is 0.001.
-        reg : TYPE, optional
-            DESCRIPTION. The default is None.
-        std : TYPE, optional
-            DESCRIPTION. The default is False.
-
-        Returns
-        -------
-        None.
-
-        """
         self.X = X
         self.y_gt = y_gt
         self.alpha = alpha
@@ -75,7 +53,7 @@ class LinearRegression():
         return np.square(self.y_pred - self.y_gt).sum() / (2*self.y_gt.shape[0])
     
     def _regularizedCostFunction(self, reg='Lasso', penalty=0.1, penalty2=None):
-        """Compute regularized cost function"""
+        """Compute cost function in case of regularized LinearRegression"""
         reg_cap = reg.capitalize()
         if reg_cap=='LASSO':
             return self._costFunction() + penalty*np.abs(self.params).sum()
@@ -95,24 +73,8 @@ class LinearRegression():
         return gradient
     
     def _regularizedGradients(self, reg='Lasso', penalty=0.1, penalty2=0.1):
-        """
+        """Calculate gradients in case of regularized LinearRegression"""
         
-
-        Parameters
-        ----------
-        reg : TYPE, optional
-            DESCRIPTION. The default is 'Lasso'.
-        penalty : TYPE, optional
-            DESCRIPTION. The default is 0.1.
-        penalty2 : TYPE, optional
-            DESCRIPTION. The default is 0.1.
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        """
         reg_cap = reg.capitalize()
         if reg_cap=='LASSO':
             return self._gradients() + penalty*self.params.shape[0]
@@ -127,15 +89,7 @@ class LinearRegression():
             ValueError(f'Invalid penalty name: {reg}\nPossibilities: "Ridge" or "Lasso" or "Elastic"')
         
     def _evaluateUpdate(self):
-        """
-        ugr
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        """
+        """Compute the change in gradient"""
         return np.abs((self.J[-1] - self.J[-2])/self.J[-2])
     
     def _updateParams(self):
@@ -147,15 +101,7 @@ class LinearRegression():
         return (self.X - np.mean(self.X)) / np.std(self.X)
     
     def _normalisationMinMax(self):
-        """
-        rigjpo
-
-        Returns
-        -------
-        TYPE
-            DESCRIPTION.
-
-        """
+        """Normalisation of input values"""
         return ((self.X - np.min(self.X))/np.max(self.X)-np.min(self.X))
         
     def fit(self):
@@ -201,9 +147,8 @@ class LinearRegression():
 
         Returns
         -------
-        TYPE
-            DESCRIPTION.
-
+        y-value
+            Prediction of the model as is.
         """
         return np.dot(self.X, self.params)
     
@@ -225,7 +170,7 @@ class LinearRegression():
         
     def plot(self):
         """
-        Plot cost function
+        Plot the evolution of the cost function during model fitting
 
         Returns
         -------
@@ -242,12 +187,12 @@ class LinearRegression():
         
     def plot_featureimportance(self, names=None):
         """
-        Plot feature importance
+        Plot the features by their importance in the model
 
         Parameters
         ----------
-        names : TYPE, optional
-            DESCRIPTION. The default is None.
+        names : list, optional
+            Names of the features if exists. The default is None.
 
         Returns
         -------
