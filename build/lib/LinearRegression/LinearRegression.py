@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 
 class LinearRegression():
     
-    def __init__(self, X, y_gt, alpha=0.003, eps=0.001, reg=None, std=False):
+    def __init__(self, X, y_gt, lr=0.003, eps=0.001, reg=None, std=False):
 
         self.X = X
         self.y_gt = y_gt
-        self.alpha = alpha
+        self.lr = lr
         self.eps = eps
         self.n, self.p = X.shape[0], X.shape[1]+1
         self.params = np.random.rand(self.p, 1)
@@ -94,7 +94,7 @@ class LinearRegression():
     
     def _updateParams(self):
         """Update parameters"""
-        return self.params - self.alpha*self.J_grad[-1]
+        return self.params - self.lr*self.J_grad[-1]
     
     def _standardisation(self):
         "Standardisation of input values"
