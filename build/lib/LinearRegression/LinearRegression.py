@@ -273,5 +273,4 @@ class LinearRegression():
         plt.barh(names_modified, p_modif, color=['navy', 'darkorange'])
         plt.show()
         
-    
  
