@@ -289,4 +289,4 @@ class LinearRegression():
         plt.ylabel('Predicted')
         plt.legend()
 
- 
+ """ TRY REGULARIZE AND NORMALIZE"""
