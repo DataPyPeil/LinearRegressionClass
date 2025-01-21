@@ -220,5 +220,6 @@ class LinearRegression():
         plt.barh(names_modified, p_modif, color=['navy', 'darkorange'])
         plt.show()
         
-    
+    def plot_actualVSpredicted(y_gt, y):
+        return None
  
