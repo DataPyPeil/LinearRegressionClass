@@ -15,7 +15,7 @@ class LinearRegression():
         if lr<=0:
             raise ValueError(f'Learning rate must be strictly positive. You entered lr={lr}')
         if eps<=0:
-            raise ValueError('Epsilon must be strictly positive. You entered eps={eps}')
+            raise ValueError(f'Epsilon must be strictly positive. You entered eps={eps}')
             
         self.lr = lr
         self.eps = eps
@@ -102,12 +102,15 @@ class LinearRegression():
             Standardize X matrix before fitting.
             The default is False.
         regularization : str, optional
-            DESCRIPTION. The default is None.
+            Add a regularization technique. The default is None.
+        penalty : float, optional
+            Penalty term for Ridge or Lasso. The default is 0.1.
+        penalty2 : float, optional
+            Second penalty term for ELASTIC regularization. The default is 0.2.
 
         Returns
         -------
-        None.
-
+        None.n
         """
         # Initialize model
         self.n, self.p = X.shape[0], X.shape[1]+1
@@ -121,7 +124,7 @@ class LinearRegression():
         
         # Standardize if necessary
         if standardize:
-            X = X._standardisation(X)
+            X = _standardisation(X)
             
         diff = [self.eps + 1]
         count = 0
@@ -164,7 +167,7 @@ class LinearRegression():
         self.best_params = self.params.copy()
         print(f'\nFit process ended with success\nMSE = {self.J[-1]}\n')
     
-    def predict(self, X):
+    def predict(self, X, y_intercept:bool=True):
         """
         Make predictions
 
@@ -178,9 +181,14 @@ class LinearRegression():
         ndarray
             Model prediction.
         """
+        # Add intercept
+        if y_intercept:
+            col = np.ones((self.n, 1))
+            X = np.concatenate((col, X), axis=1)
+            
         return np.dot(X, self.params)
     
-    def score(y_gt, y_pred):
+    def score(self, y_gt, y_pred):
         """
         Compute coefficient of determination
 
@@ -248,7 +256,7 @@ class LinearRegression():
         plt.barh(names_modified, p_modif, color=['navy', 'darkorange'])
         plt.show()
         
-    def plot_actualVSpredicted(y_gt, y_pred):
+    def plot_actualVSpredicted(self, y_gt, y_pred):
         """
         Visual representation of the performance of the linear model
 
@@ -264,11 +272,21 @@ class LinearRegression():
         None.
 
         """
+        x = np.linspace(np.min(y_gt)*0.7, np.max(y_gt)*1.3, 50)
+        y = x
+        error = 0.05 * y
+        y_min = y - error
+        y_max = y + error
+
         plt.figure(figsize=(7,7))
         plt.title('Actual vs Predicted')
         plt.scatter(y_gt, y_pred, alpha=0.8, s=10, color='navy')
-        plt.plot([-1000,1000], [-1000,1000], lw=1, ls='-', color='darkorange')
-        return None
-
+        plt.plot(x, y, lw=1, ls='-', color='darkorange', label='y=x')
+        plt.fill_between(x, y_min, y_max, color="darkorange", alpha=0.2, label="Bande d'erreur (±5%)")
+        plt.xlim(np.min(y_gt)*0.8, np.max(y_gt)*1.2)
+        plt.ylim(np.min(y_pred)*0.8, np.max(y_pred)*1.2)
+        plt.xlabel('Actual')
+        plt.ylabel('Predicted')
+        plt.legend()
 
  
