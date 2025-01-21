@@ -20,8 +20,6 @@ class LinearRegression():
         self.lr = lr
         self.eps = eps
 
-        
-        
     def _evaluate(self, X):
         """
         Compute the model LINEAR REGRESSION
@@ -34,42 +32,42 @@ class LinearRegression():
         """
         return np.dot(X, self.params)
     
-    def _costFunction(self):
+    def _costFunction(self, y_gt, y_pred):
         """Compute cost function"""
-        return np.square(self.y_pred - y_gt).sum() / (2*y_gt.shape[0])
+        return np.square(y_pred - y_gt).sum() / (2*y_gt.shape[0])
     
-    def _regularizedCostFunction(self, regularization:str='Lasso', penalty:float=0.1, penalty2:float=0.2):
+    def _regularizedCostFunction(self, y_gt, y_pred):
         """Compute cost function in case of regularized LinearRegression"""
-        reg_cap = regularization.capitalize()
+        reg_cap = self.regularization.capitalize()
         if reg_cap=='LASSO':
-            return self._costFunction() + penalty*np.abs(self.params).sum()
+            return self._costFunction(y_gt, y_pred) + self.penalty*np.abs(self.params).sum()
         elif reg_cap=='RIDGE':
-            return self._costFunction() + penalty*np.square(self.params).sum()
+            return self._costFunction(y_gt, y_pred) + self.penalty*np.square(self.params).sum()
         elif reg_cap=='ELASTIC':
-            if penalty2 is None:
+            if self.penalty2 is None:
                 ValueError('Invalid value for second penalty term')
             else:
-                return self._costFunction() + penalty*np.square(self.params).sum() + penalty2*np.abs(self.params).sum()
+                return self._costFunction(y_gt, y_pred) + self.penalty*np.square(self.params).sum() + self.penalty2*np.abs(self.params).sum()
         else:
-            ValueError(f'Invalid penalty name: {regularization}\nPossibilities: "Ridge" or "Lasso"')
+            ValueError(f'Invalid penalty name: {self.regularization}\nPossibilities: "Ridge" or "Lasso"')
         
-    def _gradients(self):
+    def _gradients(self, X, y_gt, y_pred):
         """Calculate gradients"""
-        gradient = (((self.y_pred - y_gt) * X).sum(axis=0) / X.shape[0]).reshape(X.shape[1],1)
+        gradient = (((y_pred - y_gt) * X).sum(axis=0) / X.shape[0]).reshape(X.shape[1],1)
         return gradient
     
-    def _regularizedGradients(self, regularization:str='Lasso', penalty:float=0.1, penalty2:float=0.2):
+    def _regularizedGradients(self, X, y_gt, y_pred):
         """Calculate gradients in case of regularized LinearRegression"""
         
-        reg_cap = regularization.capitalize()
+        reg_cap = self.regularization.capitalize()
         if reg_cap=='LASSO':
-            return self._gradients() + penalty*self.params.shape[0]
+            return self._gradients(X, y_gt, y_pred) + self.penalty*self.params.shape[0]
         elif reg_cap=='RIDGE':
-            return self._gradients() + 2*penalty*self.params.sum()
+            return self._gradients(X, y_gt, y_pred) + 2*self.penalty*self.params.sum()
         elif reg_cap=='ELASTIC':
-            return self._gradients() + 2*penalty*self.params.sum() + penalty2*self.params.shape[0]
+            return self._gradients(X, y_gt, y_pred) + 2*self.penalty*self.params.sum() + self.penalty2*self.params.shape[0]
         else:
-            ValueError(f'Invalid penalty name: {regularization}\nPossibilities: "Ridge" or "Lasso" or "Elastic"')
+            ValueError(f'Invalid regularization name: {self.regularization}\nPossibilities: "Ridge" or "Lasso" or "Elastic"')
         
     def _evaluateUpdate(self):
         """Compute the change in gradient"""
@@ -87,7 +85,7 @@ class LinearRegression():
     #     """Normalisation of input values"""
     #     return ((X - np.min(X))/np.max(X)-np.min(X))
         
-    def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None):
+    def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
         Fit the model to X and y_gt data
 
@@ -111,9 +109,10 @@ class LinearRegression():
         None.
 
         """
-
+        # Initialize model
         self.n, self.p = X.shape[0], X.shape[1]+1
         self.params = np.random.rand(self.p, 1)
+        self.regularization = regularization
         
         # Add intercept
         if y_intercept:
@@ -129,9 +128,9 @@ class LinearRegression():
         
         if self.regularization is None:
             # Initialisation
-            self.y_pred = self._evaluate(X)
-            self.J = [self._costFunction(y_gt)]
-            self.J_grad = [self._gradients(X, y_gt)]
+            y_pred = self._evaluate(X)
+            self.J = [self._costFunction(y_gt, y_pred)]
+            self.J_grad = [self._gradients(X, y_gt, y_pred)]
             
             # Update weights
             while diff[-1] > self.eps:
@@ -139,25 +138,27 @@ class LinearRegression():
                     print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
                 count += 1
                 self.params = self._updateParams()
-                self.y_pred = self._evaluate(X)
-                self.J.append(self._costFunction(y_gt))
-                self.J_grad.append(self._gradients(X, y_gt))
+                y_pred = self._evaluate(X)
+                self.J.append(self._costFunction(y_gt, y_pred))
+                self.J_grad.append(self._gradients(X, y_gt, y_pred))
                 diff.append(self._evaluateUpdate())
         
         else:
             # Initialisation
-            self.y_pred = self._evaluate(X)
-            self.J = [self._regularizedCostFunction(y_gt, regularization)]
-            self.J_grad = [self._regularizedGradients(X, y_gt)]
+            self.penalty = penalty
+            self.penalty2 = penalty2
+            y_pred = self._evaluate(X)
+            self.J = [self._regularizedCostFunction(y_gt, y_pred)]
+            self.J_grad = [self._regularizedGradients(X, y_gt, y_pred)]
             
             while diff[-1] > self.eps:
                 if count%1000==0:
                     print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
                 count += 1
                 self.params = self._updateParams()
-                self.y_pred = self._evaluate(X)
-                self.J.append(self._regularizedCostFunction(y_gt))
-                self.J_grad.append(self._regularizedGradients(X, y_gt))
+                y_pred = self._evaluate(X)
+                self.J.append(self._regularizedCostFunction(y_gt, y_pred))
+                self.J_grad.append(self._regularizedGradients(X, y_gt, y_pred))
                 diff.append(self._evaluateUpdate())
         
         self.best_params = self.params.copy()
@@ -269,6 +270,5 @@ class LinearRegression():
         plt.plot([-1000,1000], [-1000,1000], lw=1, ls='-', color='darkorange')
         return None
 
-""" Only keep hyperparameters in __init__ like penalty parameters ..."""
 
  
