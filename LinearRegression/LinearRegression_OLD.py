@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Dec  2 10:44:13 2024
+Created on Tue Jan 21 16:41:22 2025
 
 @author: peill
-          
+OLD VERSION
 """
+
 
 import numpy as np
 import matplotlib.pyplot as plt
