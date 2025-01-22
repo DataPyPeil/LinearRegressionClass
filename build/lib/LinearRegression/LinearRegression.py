@@ -83,7 +83,9 @@ class LinearRegression():
     
     def _normalisationMinMax(self, X):
         """Normalisation of input values"""
-        return (X - np.min(X, axis=0))/(np.max(X, axis=0)-np.min(X, axis=0))
+        value_range = np.max(X, axis=0)-np.min(X, axis=0)
+        print(value_range)
+        return (X - np.min(X, axis=0))/value_range
         
     def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
@@ -117,14 +119,19 @@ class LinearRegression():
         self.params = np.random.rand(self.p, 1)
         self.regularization = regularization
         
+        # Standardize if necessary
+        if standardize:
+            X = self._standardisation(X)
+            self.meanX = np.mean(X, axis=0)
+            self.stdX = np.std(X, axis=0)
+        else:
+            self.meanX, self.stdX = None, None
+            
         # Add intercept
         if y_intercept:
             col = np.ones((self.n, 1))
             X = np.concatenate((col, X), axis=1)
         
-        # Standardize if necessary
-        if standardize:
-            X = self._normalisationMinMax(X)
             
         diff = [self.eps + 1]
         count = 0
@@ -181,6 +188,10 @@ class LinearRegression():
         ndarray
             Model prediction.
         """
+        # Standardize if necessary
+        if self.meanX is not None:
+            X = (X - self.meanX) / self.stdX
+        
         # Add intercept
         if y_intercept:
             col = np.ones((self.n, 1))

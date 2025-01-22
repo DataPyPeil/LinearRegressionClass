@@ -19,6 +19,9 @@ class LinearRegression():
             
         self.lr = lr
         self.eps = eps
+        
+        self.meanX = None
+        self.stdX = None
 
     def _evaluate(self, X):
         """
@@ -79,11 +82,15 @@ class LinearRegression():
     
     def _standardisation(self, X):
         """Standardisation of features"""
-        return (X - np.mean(X, axis=0)) / np.std(X, axis=0)
+        self.meanX = np.mean(X, axis=0)
+        self.stdX = np.std(X, axis=0)
+        return (X - self.meanX) / self.stdX
     
     def _normalisationMinMax(self, X):
         """Normalisation of input values"""
-        return (X - np.min(X, axis=0))/(np.max(X, axis=0)-np.min(X, axis=0))
+        value_range = np.max(X, axis=0)-np.min(X, axis=0)
+        print(value_range)
+        return (X - np.min(X, axis=0))/value_range
         
     def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
@@ -112,20 +119,23 @@ class LinearRegression():
         -------
         None.n
         """
-        # Initialize model
-        self.n, self.p = X.shape[0], X.shape[1]+1
-        self.params = np.random.rand(self.p, 1)
-        self.regularization = regularization
         
-        # Add intercept
+        # Standardize if required
+        if standardize:
+            X = self._standardisation(X)
+            
+        # Add intercept if required
         if y_intercept:
+            self.n, self.p = X.shape[0], X.shape[1]+1
             col = np.ones((self.n, 1))
             X = np.concatenate((col, X), axis=1)
+        else:
+            self.n, self.p = X.shape[0], X.shape[1]
         
-        # Standardize if necessary
-        if standardize:
-            X = self._normalisationMinMax(X)
-            
+        # Initialize model
+        self.params = np.random.rand(self.p, 1)
+        self.regularization = regularization
+           
         diff = [self.eps + 1]
         count = 0
         
@@ -181,9 +191,14 @@ class LinearRegression():
         ndarray
             Model prediction.
         """
+        
+        # Standardize if necessary
+        if self.meanX is not None:
+            X = (X - self.meanX) / self.stdX
+        
         # Add intercept
         if y_intercept:
-            col = np.ones((self.n, 1))
+            col = np.ones((X.shape[0], 1))
             X = np.concatenate((col, X), axis=1)
             
         return np.dot(X, self.params)
@@ -288,5 +303,3 @@ class LinearRegression():
         plt.xlabel('Actual')
         plt.ylabel('Predicted')
         plt.legend()
-
-""" TRY REGULARIZE AND NORMALIZE"""
