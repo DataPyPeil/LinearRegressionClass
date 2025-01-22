@@ -15,7 +15,7 @@ class LinearRegression():
         if lr<=0:
             raise ValueError(f'Learning rate must be strictly positive. You entered lr={lr}')
         if eps<=0:
-            raise ValueError('Epsilon must be strictly positive. You entered eps={eps}')
+            raise ValueError(f'Epsilon must be strictly positive. You entered eps={eps}')
             
         self.lr = lr
         self.eps = eps
@@ -77,13 +77,13 @@ class LinearRegression():
         """Update parameters"""
         return self.params - self.lr*self.J_grad[-1]
     
-    def _standardisation(X):
-        "Standardisation of input values"
-        return (X - np.mean(X)) / np.std(X)
+    def _standardisation(self, X):
+        """Standardisation of features"""
+        return (X - np.mean(X, axis=0)) / np.std(X, axis=0)
     
-    # def _normalisationMinMax(X):
-    #     """Normalisation of input values"""
-    #     return ((X - np.min(X))/np.max(X)-np.min(X))
+    def _normalisationMinMax(self, X):
+        """Normalisation of input values"""
+        return (X - np.min(X, axis=0))/(np.max(X, axis=0)-np.min(X, axis=0))
         
     def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
@@ -124,7 +124,7 @@ class LinearRegression():
         
         # Standardize if necessary
         if standardize:
-            X = _standardisation(X)
+            X = self._normalisationMinMax(X)
             
         diff = [self.eps + 1]
         count = 0
@@ -289,4 +289,4 @@ class LinearRegression():
         plt.ylabel('Predicted')
         plt.legend()
 
- 
+""" TRY REGULARIZE AND NORMALIZE"""
