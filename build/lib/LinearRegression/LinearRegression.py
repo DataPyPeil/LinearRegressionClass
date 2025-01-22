@@ -19,6 +19,9 @@ class LinearRegression():
             
         self.lr = lr
         self.eps = eps
+        
+        self.meanX = None
+        self.stdX = None
 
     def _evaluate(self, X):
         """
@@ -38,7 +41,7 @@ class LinearRegression():
     
     def _regularizedCostFunction(self, y_gt, y_pred):
         """Compute cost function in case of regularized LinearRegression"""
-        reg_cap = self.regularization.capitalize()
+        reg_cap = self.regularization.upper()
         if reg_cap=='LASSO':
             return self._costFunction(y_gt, y_pred) + self.penalty*np.abs(self.params).sum()
         elif reg_cap=='RIDGE':
@@ -59,7 +62,7 @@ class LinearRegression():
     def _regularizedGradients(self, X, y_gt, y_pred):
         """Calculate gradients in case of regularized LinearRegression"""
         
-        reg_cap = self.regularization.capitalize()
+        reg_cap = self.regularization.upper()
         if reg_cap=='LASSO':
             return self._gradients(X, y_gt, y_pred) + self.penalty*self.params.shape[0]
         elif reg_cap=='RIDGE':
@@ -79,13 +82,15 @@ class LinearRegression():
     
     def _standardisation(self, X):
         """Standardisation of features"""
-        return (X - np.mean(X, axis=0)) / np.std(X, axis=0)
+        self.meanX = np.mean(X, axis=0)
+        self.stdX = np.std(X, axis=0)
+        return (X - self.meanX) / self.stdX
     
-    def _normalisationMinMax(self, X):
-        """Normalisation of input values"""
-        value_range = np.max(X, axis=0)-np.min(X, axis=0)
-        print(value_range)
-        return (X - np.min(X, axis=0))/value_range
+    # def _normalisationMinMax(self, X):
+    #     """Normalisation of input values"""
+    #     value_range = np.max(X, axis=0)-np.min(X, axis=0)
+    #     print(value_range)
+    #     return (X - np.min(X, axis=0))/value_range
         
     def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
@@ -114,25 +119,24 @@ class LinearRegression():
         -------
         None.n
         """
-        # Initialize model
-        self.n, self.p = X.shape[0], X.shape[1]+1
-        self.params = np.random.rand(self.p, 1)
-        self.regularization = regularization
+        max_iter = 100000
         
-        # Standardize if necessary
+        # Standardize if required
         if standardize:
             X = self._standardisation(X)
-            self.meanX = np.mean(X, axis=0)
-            self.stdX = np.std(X, axis=0)
-        else:
-            self.meanX, self.stdX = None, None
             
-        # Add intercept
+        # Add intercept if required
         if y_intercept:
+            self.n, self.p = X.shape[0], X.shape[1]+1
             col = np.ones((self.n, 1))
             X = np.concatenate((col, X), axis=1)
+        else:
+            self.n, self.p = X.shape[0], X.shape[1]
         
-            
+        # Initialize model
+        self.params = np.random.rand(self.p, 1)
+        self.regularization = regularization
+           
         diff = [self.eps + 1]
         count = 0
         
@@ -143,9 +147,9 @@ class LinearRegression():
             self.J_grad = [self._gradients(X, y_gt, y_pred)]
             
             # Update weights
-            while diff[-1] > self.eps:
+            while diff[-1] > self.eps and count<max_iter:
                 if count%1000==0:
-                    print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
+                    print(f'Itération {count:06d}: MSE={self.J[-1]:.4E}')
                 count += 1
                 self.params = self._updateParams()
                 y_pred = self._evaluate(X)
@@ -161,9 +165,9 @@ class LinearRegression():
             self.J = [self._regularizedCostFunction(y_gt, y_pred)]
             self.J_grad = [self._regularizedGradients(X, y_gt, y_pred)]
             
-            while diff[-1] > self.eps:
+            while diff[-1] > self.eps and count<max_iter:
                 if count%1000==0:
-                    print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
+                    print(f'Itération {count:06d}: MSE={self.J[-1]:.4E}')
                 count += 1
                 self.params = self._updateParams()
                 y_pred = self._evaluate(X)
@@ -172,8 +176,11 @@ class LinearRegression():
                 diff.append(self._evaluateUpdate())
         
         self.best_params = self.params.copy()
-        print(f'\nFit process ended with success\nMSE = {self.J[-1]}\n')
-    
+        if count<max_iter:
+            print(f'\nFit process ended with success after {count} iterations\nMSE = {self.J[-1]}\n')
+        else:
+            print(f'\nFit process ended was stopped after {max_iter} iterations\nMSE = {self.J[-1]}\n')
+            
     def predict(self, X, y_intercept:bool=True):
         """
         Make predictions
@@ -188,16 +195,17 @@ class LinearRegression():
         ndarray
             Model prediction.
         """
+        
         # Standardize if necessary
         if self.meanX is not None:
             X = (X - self.meanX) / self.stdX
         
         # Add intercept
         if y_intercept:
-            col = np.ones((self.n, 1))
+            col = np.ones((X.shape[0], 1))
             X = np.concatenate((col, X), axis=1)
             
-        return np.dot(X, self.params)
+        return self._evaluate(X)
     
     def score(self, y_gt, y_pred):
         """
@@ -227,7 +235,7 @@ class LinearRegression():
         None.
 
         """
-        plt.figure(figsize=(6,6))
+        # plt.figure()
         plt.plot(self.J, label='J($\\theta$)', color='navy', lw=1)
         plt.title('Evolution de la fonction coût J($\\theta$)')
         plt.yscale('log')
@@ -261,11 +269,11 @@ class LinearRegression():
         p_modif = np.take_along_axis(p*100/np.sum(p), index, axis=0)
 
         # Plot
-        plt.figure(figsize=(5,5))
+        # plt.figure()
         plt.title('Feature importance')
         plt.xlabel('% of importance')
         plt.barh(names_modified, p_modif, color=['navy', 'darkorange'])
-        plt.show()
+        # plt.show()
         
     def plot_actualVSpredicted(self, y_gt, y_pred):
         """
@@ -289,8 +297,8 @@ class LinearRegression():
         y_min = y - error
         y_max = y + error
 
-        plt.figure(figsize=(7,7))
-        plt.title('Actual vs Predicted')
+        # plt.figure()
+        plt.title(f'Actual vs Predicted\nR²={self.score(y_gt, y_pred):.4f}')
         plt.scatter(y_gt, y_pred, alpha=0.8, s=10, color='navy')
         plt.plot(x, y, lw=1, ls='-', color='darkorange', label='y=x')
         plt.fill_between(x, y_min, y_max, color="darkorange", alpha=0.2, label="Bande d'erreur (±5%)")
@@ -298,6 +306,10 @@ class LinearRegression():
         plt.ylim(np.min(y_pred)*0.8, np.max(y_pred)*1.2)
         plt.xlabel('Actual')
         plt.ylabel('Predicted')
+        plt.grid(color='grey', linestyle=':', linewidth=0.5)
+        # plt.axis('equal')
         plt.legend()
+        
 
-""" TRY REGULARIZE AND NORMALIZE"""
+
+
