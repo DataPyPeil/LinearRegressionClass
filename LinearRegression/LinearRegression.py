@@ -41,8 +41,11 @@ class LinearRegression():
     
     def _regularizedCostFunction(self, y_gt, y_pred):
         """Compute cost function in case of regularized LinearRegression"""
-        reg_cap = self.regularization.capitalize()
+        reg_cap = self.regularization.upper()
+        print(reg_cap=='LASSO')
         if reg_cap=='LASSO':
+            print(f'cost function:{self._costFunction(y_gt, y_pred)}')
+            print(f'penalty term:{self.penalty*np.abs(self.params).sum()}')
             return self._costFunction(y_gt, y_pred) + self.penalty*np.abs(self.params).sum()
         elif reg_cap=='RIDGE':
             return self._costFunction(y_gt, y_pred) + self.penalty*np.square(self.params).sum()
@@ -62,7 +65,7 @@ class LinearRegression():
     def _regularizedGradients(self, X, y_gt, y_pred):
         """Calculate gradients in case of regularized LinearRegression"""
         
-        reg_cap = self.regularization.capitalize()
+        reg_cap = self.regularization.upper()
         if reg_cap=='LASSO':
             return self._gradients(X, y_gt, y_pred) + self.penalty*self.params.shape[0]
         elif reg_cap=='RIDGE':
@@ -86,11 +89,11 @@ class LinearRegression():
         self.stdX = np.std(X, axis=0)
         return (X - self.meanX) / self.stdX
     
-    def _normalisationMinMax(self, X):
-        """Normalisation of input values"""
-        value_range = np.max(X, axis=0)-np.min(X, axis=0)
-        print(value_range)
-        return (X - np.min(X, axis=0))/value_range
+    # def _normalisationMinMax(self, X):
+    #     """Normalisation of input values"""
+    #     value_range = np.max(X, axis=0)-np.min(X, axis=0)
+    #     print(value_range)
+    #     return (X - np.min(X, axis=0))/value_range
         
     def fit(self, X, y_gt, y_intercept:bool=True, standardize:bool=False, regularization:str=None, penalty:float=0.1, penalty2:float=0.2):
         """
@@ -148,7 +151,7 @@ class LinearRegression():
             # Update weights
             while diff[-1] > self.eps:
                 if count%1000==0:
-                    print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
+                    print(f'\n--- Itération {count:06d} ---\nMSE = {self.J[-1]:.4E}')
                 count += 1
                 self.params = self._updateParams()
                 y_pred = self._evaluate(X)
@@ -161,12 +164,15 @@ class LinearRegression():
             self.penalty = penalty
             self.penalty2 = penalty2
             y_pred = self._evaluate(X)
+            print('\n\nbefore loss')
             self.J = [self._regularizedCostFunction(y_gt, y_pred)]
+            print('after loss')
             self.J_grad = [self._regularizedGradients(X, y_gt, y_pred)]
+            print('after all')
             
             while diff[-1] > self.eps:
                 if count%1000==0:
-                    print(f'\n--- Itération {count} ---\nMSE = {self.J[-1]:.7E}')
+                    print(f'\nItération {count:06d}: MSE = {self.J[-1]:.4E}')
                 count += 1
                 self.params = self._updateParams()
                 y_pred = self._evaluate(X)
@@ -201,7 +207,7 @@ class LinearRegression():
             col = np.ones((X.shape[0], 1))
             X = np.concatenate((col, X), axis=1)
             
-        return np.dot(X, self.params)
+        return self._evaluate(X)
     
     def score(self, y_gt, y_pred):
         """
@@ -294,7 +300,7 @@ class LinearRegression():
         y_max = y + error
 
         plt.figure(figsize=(7,7))
-        plt.title('Actual vs Predicted')
+        plt.title(f'Actual vs Predicted\nR²={model.score(y_gt, y_pred):.4f}')
         plt.scatter(y_gt, y_pred, alpha=0.8, s=10, color='navy')
         plt.plot(x, y, lw=1, ls='-', color='darkorange', label='y=x')
         plt.fill_between(x, y_min, y_max, color="darkorange", alpha=0.2, label="Bande d'erreur (±5%)")
@@ -302,4 +308,93 @@ class LinearRegression():
         plt.ylim(np.min(y_pred)*0.8, np.max(y_pred)*1.2)
         plt.xlabel('Actual')
         plt.ylabel('Predicted')
+        plt.grid(color='grey', linestyle=':', linewidth=0.5)
+        # plt.axis('equal')
         plt.legend()
+        
+# %% TEST Class
+from pathlib import Path
+import pandas as pd
+
+# data_path = Path.cwd()
+# df = pd.read_csv(data_path / 'LinearRegression/example/Company_data.csv')
+
+# # Remove columns
+# if 'Area' in df.columns:
+#     df = df.drop(['Area'], axis=1)
+    
+# features = df.columns[:-1]
+# X, y = df[features].to_numpy(), df[['Profit']].to_numpy()
+# print(features)
+
+# # print(pd.DataFrame(X).head())
+
+# # LinearRegression CLASSIC
+# model = LinearRegression(lr=1e-12, eps=1e-5)
+# model.fit(X, y)
+# y_pred = model.predict(X)
+# print(f'R-squared without normalisati: {model.score(y, y_pred):.4f}')
+# model.plot_actualVSpredicted(y, y_pred)
+# model.plot()
+
+# # print(pd.DataFrame(X).head())
+
+# # LinearRegression + NORMALISATION
+# model = LinearRegression(lr=1e-12, eps=1e-15)
+# model.fit(X, y, standardize=True)
+# y_pred = model.predict(X)
+# print(f'R-squared after Normalisation: {model.score(y, y_pred):.4f}')
+# model.plot_actualVSpredicted(y, y_pred)
+# model.plot()
+
+# # print(pd.DataFrame(X).head())
+
+#%% TOY DATASET
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x1 = np.linspace(10,30,50)
+x2 = np.linspace(10,30,50)
+noise = np.random.random(50)*20
+y = (2*x1 + 5*x2 + noise).reshape(-1,1)
+X = pd.DataFrame(data={'x1':x1,'x2':x2})
+
+# # LinearRegression CLASSIC
+# model = LinearRegression(lr=1e-3, eps=1e-5)
+# model.fit(X, y)
+# y_pred = model.predict(X)
+# print(f'R-squared without normalisation: {model.score(y, y_pred):.4f}')
+# model.plot_actualVSpredicted(y, y_pred)
+# model.plot()
+
+# plt.figure()
+# plt.scatter(np.linspace(0, 49, 50), y, marker='x', s=10, color='navy')
+# plt.plot(y_pred, color='darkorange')
+# plt.show()
+
+# # LinearRegression + NORMALISATION
+# model = LinearRegression(lr=1e-3, eps=1e-5)
+# model.fit(X, y, standardize=True)
+# y_pred = model.predict(X)
+# print(f'R-squared after Normalisation: {model.score(y, y_pred):.4f}')
+# model.plot_actualVSpredicted(y, y_pred)
+# model.plot()
+
+# plt.figure()
+# plt.scatter(np.linspace(0, 49, 50), y, marker='x', s=10, color='navy')
+# plt.plot(y_pred, color='darkorange')
+# plt.show()
+
+# LinearRegression + REGULARISATION
+model = LinearRegression(lr=1e-3, eps=1e-5)
+model.fit(X, y, standardize=True, regularization='LASSO')
+y_pred = model.predict(X)
+print(f'R-squared after Regularisation: {model.score(y, y_pred):.4f}')
+model.plot_actualVSpredicted(y, y_pred)
+model.plot()
+
+plt.figure()
+plt.scatter(np.linspace(0, 49, 50), y, marker='x', s=10, color='navy')
+plt.plot(y_pred, color='darkorange')
+plt.show()
