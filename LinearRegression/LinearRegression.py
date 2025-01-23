@@ -119,7 +119,7 @@ class LinearRegression():
         -------
         None.n
         """
-        max_iter = 100000
+        max_iter = 1000000
         
         # Standardize if required
         if standardize:
@@ -235,7 +235,7 @@ class LinearRegression():
         None.
 
         """
-        # plt.figure()
+        # plt.figure() # --Removed to be called in a subplot
         plt.plot(self.J, label='J($\\theta$)', color='navy', lw=1)
         plt.title('Evolution de la fonction coût J($\\theta$)')
         plt.yscale('log')
@@ -268,8 +268,7 @@ class LinearRegression():
         names_modified = np.take_along_axis(names, index, axis=0)
         p_modif = np.take_along_axis(p*100/np.sum(p), index, axis=0)
 
-        # Plot
-        # plt.figure()
+        # plt.figure() # --Removed to be called in a subplot
         plt.title('Feature importance')
         plt.xlabel('% of importance')
         plt.barh(names_modified, p_modif, color=['navy', 'darkorange'])
@@ -297,7 +296,7 @@ class LinearRegression():
         y_min = y - error
         y_max = y + error
 
-        # plt.figure()
+        # plt.figure() # --Removed to be called in a subplot
         plt.title(f'Actual vs Predicted\nR²={self.score(y_gt, y_pred):.4f}')
         plt.scatter(y_gt, y_pred, alpha=0.8, s=10, color='navy')
         plt.plot(x, y, lw=1, ls='-', color='darkorange', label='y=x')
@@ -310,6 +309,3 @@ class LinearRegression():
         # plt.axis('equal')
         plt.legend()
         
-
-
-
