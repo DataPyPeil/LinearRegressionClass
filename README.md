@@ -26,3 +26,5 @@ To run this project, ensure you have Python 3.7 or above installed, along with t
 
 - `numpy` for matrix operations
 - `matplotlib` (optional, for plotting results)
+
+git clone https://github.com/DataPyPeil/LinearRegressionClass.git

@@ -1,9 +1,0 @@
-README.md
-setup.py
-LinearRegression/LinearRegression.py
-LinearRegression/__init__.py
-LinearRegression.egg-info/PKG-INFO
-LinearRegression.egg-info/SOURCES.txt
-LinearRegression.egg-info/dependency_links.txt
-LinearRegression.egg-info/requires.txt
-LinearRegression.egg-info/top_level.txt

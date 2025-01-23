@@ -1,8 +1,0 @@
-Metadata-Version: 2.1
-Name: LinearRegression
-Version: 1.0.0
-Summary: Perform linear regression
-Author: Clément Peillon
-Author-email: clement.peillon@sigma-clermont.fr
-Requires-Dist: numpy
-Requires-Dist: matplotlib
